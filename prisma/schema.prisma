@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  emailVerified  DateTime?
+  name           String?
+  image          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  accounts       Account[]
+  sessions       Session[]
+  subscription   DigestSubscription?
+  sentPostcards  Postcard[] @relation("SentPostcards")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model DigestSubscription {
+  id                  String      @id @default(cuid())
+  userId              String      @unique
+  email               String
+  unsubscribeToken    String      @unique @default(cuid())
+  isActive            Boolean     @default(true)
+  timezone            String      @default("UTC")
+  temporalWorkflowId  String?
+  createdAt           DateTime    @default(now())
+  user                User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  digestLogs          DigestLog[]
+}
+
+model DigestLog {
+  id             String       @id @default(cuid())
+  subscriptionId String
+  sentAt         DateTime     @default(now())
+  catFact        String
+  breedName      String
+  memeUrl        String
+  status         DigestStatus @default(SENT)
+  subscription   DigestSubscription @relation(fields: [subscriptionId], references: [id])
+}
+
+model Postcard {
+  id                  String        @id @default(cuid())
+  senderId            String?
+  recipientEmail      String
+  recipientName       String?
+  message             String        @db.Text
+  templateId          String
+  canvasData          Json
+  previewImageUrl     String?
+  scheduledFor        DateTime
+  sentAt              DateTime?
+  status              PostcardStatus @default(PENDING)
+  viewToken           String        @unique @default(cuid())
+  temporalWorkflowId  String?
+  createdAt           DateTime      @default(now())
+  sender              User?         @relation("SentPostcards", fields: [senderId], references: [id])
+}
+
+model CatBreed {
+  id          String  @id
+  name        String
+  description String  @db.Text
+  temperament String
+  lifeSpan    String
+  imageUrl    String?
+  origin      String?
+
+  @@map("cat_breeds")
+}
+
+enum DigestStatus {
+  SENT
+  FAILED
+  BOUNCED
+}
+
+enum PostcardStatus {
+  PENDING
+  SENT
+  FAILED
+  CANCELLED
+}
+
+model CatFact {
+  id          String   @id @default(cuid())
+  fact        String   @db.Text
+  category    String   @default("general")
+  emoji       String   @default("🐱")
+  showCount   Int      @default(0)
+  lastShownAt DateTime @default("1970-01-01T00:00:00Z")
+  createdAt   DateTime @default(now())
+
+  @@map("cat_facts")
+}

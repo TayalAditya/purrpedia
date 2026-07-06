@@ -1,0 +1,32 @@
+services:
+  - type: worker
+    name: purrpedia-worker
+    runtime: node
+    plan: free
+    buildCommand: npm install && npx tsc --project tsconfig.worker.json
+    startCommand: node dist/temporal/worker.js
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: TEMPORAL_ADDRESS
+        sync: false
+      - key: TEMPORAL_NAMESPACE
+        sync: false
+      - key: TEMPORAL_TASK_QUEUE
+        sync: false
+      - key: EMAIL_SERVER_HOST
+        sync: false
+      - key: EMAIL_SERVER_PORT
+        sync: false
+      - key: EMAIL_SERVER_USER
+        sync: false
+      - key: EMAIL_SERVER_PASSWORD
+        sync: false
+      - key: EMAIL_FROM
+        sync: false
+      - key: NEXTAUTH_URL
+        sync: false
+      - key: THE_CAT_API_KEY
+        sync: false
+      - key: BLOB_READ_WRITE_TOKEN
+        sync: false

@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PurrPedia - The Cat Encyclopedia
+
+**Built for [#HackTheKitty 2026](https://hackthekitty.devpost.com)**
+
+PurrPedia is a full-stack cat encyclopedia with daily digests, schedulable postcards, a breed encyclopedia, personality quizzes, and a cat name generator — all wrapped in a playful, polished UI with custom cat cursors, paw trails, and synthesized meow sounds.
+
+## Features
+
+| Feature | Description |
+|---------|-------------|
+| **Daily Digest** | Subscribe to receive a cat fact, breed spotlight & cat photo every morning at 8am your timezone. Powered by Temporal durable workflows. |
+| **Purr Postcards** | Design cat postcards with a Fabric.js canvas editor — stickers, text, backgrounds. Schedule delivery for any future date via Temporal. |
+| **Breed Index** | Browse 247+ cat breeds with photos, temperament ratings, trait bars, Wikipedia summaries, and origin stories. |
+| **Which Cat Are You?** | 7-question personality quiz that maps you to one of 10 cat breeds with custom result cards. |
+| **Cat Name Generator** | Generate ridiculously royal cat names like *"Professor Biscuit McFluffington, Destroyer of Curtains"*. |
+| **Cat Facts** | Swipeable TikTok-style fact cards with categories, keyboard/touch navigation, and sound effects. |
+
+## Interactive Details
+
+- Custom **paw cursor** (SVG) replaces the mouse on desktop
+- **Paw trail** that follows your mouse movement with alternating left/right prints
+- **Synthesized cat sounds** via Web Audio API — meows, purrs, and swipe sounds (no audio files)
+- **Scroll reveal animations** with intersection observer
+- **Light/dark theme** toggle with full CSS override system
+- **Mobile-first responsive** design with hamburger nav and touch swipe support
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 16 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS 4 |
+| Database | PostgreSQL (Neon) + Prisma ORM |
+| Auth | NextAuth v5 (magic link / email) |
+| Workflows | Temporal (daily digest scheduling, postcard delivery) |
+| Canvas | Fabric.js (postcard editor) |
+| Email | Nodemailer (SMTP) |
+| Fonts | Playfair Display, DM Sans, DM Mono |
+| Validation | Zod |
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- PostgreSQL database (recommend [Neon](https://neon.tech))
+- Temporal server (for digest/postcard scheduling)
+- [The Cat API](https://thecatapi.com) key (free)
+
+### Setup
 
 ```bash
+# Clone the repo
+git clone https://github.com/TayalAditya/purrpedia.git
+cd purrpedia
+
+# Install dependencies
+npm install
+
+# Copy environment variables
+cp .env.example .env
+# Fill in your DATABASE_URL, NEXTAUTH_SECRET, email credentials, etc.
+
+# Push database schema
+npx prisma db push
+
+# Seed cat facts (optional)
+curl -X POST http://localhost:3000/api/facts
+
+# Run the dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+See [`.env.example`](.env.example) for all required variables:
 
-## Learn More
+- `DATABASE_URL` — PostgreSQL connection string
+- `NEXTAUTH_SECRET` — Random secret for NextAuth
+- `EMAIL_SERVER_*` — SMTP credentials for magic links & postcards
+- `TEMPORAL_ADDRESS` — Temporal server address
+- `THE_CAT_API_KEY` — Free API key from thecatapi.com
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+  app/
+    page.tsx                 # Landing page
+    breeds/                  # Breed index + detail pages
+    facts/                   # Swipeable cat facts
+    quiz/                    # Personality quiz
+    name-generator/          # Cat name generator
+    postcards/               # Postcard editor + viewer
+    dashboard/               # User dashboard
+    digest/                  # Digest subscribe/unsubscribe
+    login/                   # Magic link auth
+    api/                     # API routes
+  components/
+    CatCursor.tsx            # Custom paw cursor
+    PawTrail.tsx             # Mouse trail paw prints
+    CatSounds.tsx            # Web Audio synthesized sounds
+    ThemeToggle.tsx          # Light/dark theme
+    MobileNav.tsx            # Responsive navigation
+    canvas/PostcardEditor.tsx # Fabric.js postcard editor
+  temporal/
+    workflows/               # Temporal workflow definitions
+    activities/              # Temporal activity implementations
+    worker.ts                # Temporal worker
+  lib/
+    auth.ts                  # NextAuth config
+    prisma.ts                # Prisma client
+    cat-api.ts               # External cat API wrappers
+    mailer.ts                # Email sending
+    rate-limit.ts            # API rate limiting
+prisma/
+  schema.prisma              # Database schema
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
