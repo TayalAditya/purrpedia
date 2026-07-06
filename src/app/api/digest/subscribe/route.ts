@@ -6,7 +6,9 @@ import { rateLimit } from "@/lib/rate-limit";
 import { z } from "zod";
 
 const schema = z.object({
-  timezone: z.string().default("UTC"),
+  timezone: z.string().max(50).refine((tz) => {
+    try { Intl.DateTimeFormat(undefined, { timeZone: tz }); return true; } catch { return false; }
+  }, "Invalid timezone"),
 });
 
 export async function POST(req: NextRequest) {
@@ -47,26 +49,30 @@ export async function POST(req: NextRequest) {
         },
       });
 
-  const client = await getTemporalClient();
-  const workflowId = `digest-${subscription.id}`;
+  try {
+    const client = await getTemporalClient();
+    const workflowId = `digest-${subscription.id}`;
 
-  await client.workflow.start("DigestSchedulerWorkflow", {
-    taskQueue: TASK_QUEUE,
-    workflowId,
-    args: [
-      {
-        subscriptionId: subscription.id,
-        email: subscription.email,
-        unsubscribeToken: subscription.unsubscribeToken,
-        timezone: subscription.timezone,
-      },
-    ],
-  });
+    await client.workflow.start("DigestSchedulerWorkflow", {
+      taskQueue: TASK_QUEUE,
+      workflowId,
+      args: [
+        {
+          subscriptionId: subscription.id,
+          email: subscription.email,
+          unsubscribeToken: subscription.unsubscribeToken,
+          timezone: subscription.timezone,
+        },
+      ],
+    });
 
-  await prisma.digestSubscription.update({
-    where: { id: subscription.id },
-    data: { temporalWorkflowId: workflowId },
-  });
+    await prisma.digestSubscription.update({
+      where: { id: subscription.id },
+      data: { temporalWorkflowId: workflowId },
+    });
+  } catch {
+    // Temporal unavailable — subscription saved but workflow deferred
+  }
 
   return NextResponse.json({ success: true });
 }

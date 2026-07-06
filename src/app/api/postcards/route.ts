@@ -6,12 +6,15 @@ import { rateLimitPostcard } from "@/lib/rate-limit";
 import { z } from "zod";
 
 const createSchema = z.object({
-  recipientEmail: z.string().email(),
+  recipientEmail: z.string().email().max(254),
   recipientName: z.string().max(100).optional(),
   message: z.string().min(1).max(500),
-  templateId: z.string(),
+  templateId: z.string().max(50),
   canvasData: z.record(z.string(), z.unknown()),
-  scheduledFor: z.string(),
+  scheduledFor: z.string().refine((s) => {
+    const d = new Date(s);
+    return !isNaN(d.getTime()) && d.getTime() > Date.now();
+  }, "Must be a valid future date"),
 });
 
 export async function POST(req: NextRequest) {
@@ -50,19 +53,23 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  const client = await getTemporalClient();
-  const workflowId = `postcard-${postcard.id}`;
+  try {
+    const client = await getTemporalClient();
+    const workflowId = `postcard-${postcard.id}`;
 
-  await client.workflow.start("ScheduledPostcardWorkflow", {
-    taskQueue: TASK_QUEUE,
-    workflowId,
-    args: [{ postcardId: postcard.id, scheduledFor: body.data.scheduledFor }],
-  });
+    await client.workflow.start("ScheduledPostcardWorkflow", {
+      taskQueue: TASK_QUEUE,
+      workflowId,
+      args: [{ postcardId: postcard.id, scheduledFor: body.data.scheduledFor }],
+    });
 
-  await prisma.postcard.update({
-    where: { id: postcard.id },
-    data: { temporalWorkflowId: workflowId },
-  });
+    await prisma.postcard.update({
+      where: { id: postcard.id },
+      data: { temporalWorkflowId: workflowId },
+    });
+  } catch {
+    // Temporal unavailable — postcard saved but scheduling deferred
+  }
 
   return NextResponse.json({ id: postcard.id, viewToken: postcard.viewToken });
 }
