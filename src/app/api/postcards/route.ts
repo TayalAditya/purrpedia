@@ -18,18 +18,18 @@ const createSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const ip = req.headers.get("x-forwarded-for") ?? "unknown";
-  const { success, remaining } = rateLimitPostcard(ip);
+  const { success, remaining } = rateLimitPostcard(session.user.id, ip);
   if (!success) {
     return NextResponse.json(
       { error: "Daily limit reached. You can send 5 Purrs per day." },
       { status: 429, headers: { "X-RateLimit-Remaining": "0" } }
     );
-  }
-
-  const session = await auth();
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const body = createSchema.safeParse(await req.json());

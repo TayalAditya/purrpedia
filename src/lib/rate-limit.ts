@@ -1,10 +1,21 @@
 const ratelimitStore = new Map<string, { count: number; resetAt: number }>();
 
+const MAX_STORE_SIZE = 10_000;
+
+function cleanupStore() {
+  if (ratelimitStore.size <= MAX_STORE_SIZE) return;
+  const now = Date.now();
+  for (const [key, entry] of ratelimitStore) {
+    if (now > entry.resetAt) ratelimitStore.delete(key);
+  }
+}
+
 export function rateLimit(
   key: string,
   limit: number,
   windowMs: number
 ): { success: boolean; remaining: number } {
+  cleanupStore();
   const now = Date.now();
   const entry = ratelimitStore.get(key);
 
@@ -23,6 +34,10 @@ export function rateLimit(
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-export function rateLimitPostcard(ip: string): { success: boolean; remaining: number } {
-  return rateLimit(`postcard-daily:${ip}`, 5, DAY_MS);
+export function rateLimitPostcard(userId: string, ip: string): { success: boolean; remaining: number } {
+  const byUser = rateLimit(`postcard-daily:user:${userId}`, 5, DAY_MS);
+  if (!byUser.success) return byUser;
+  const byIp = rateLimit(`postcard-daily:ip:${ip}`, 10, DAY_MS);
+  if (!byIp.success) return byIp;
+  return byUser;
 }

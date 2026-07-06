@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
+import { rateLimit } from "@/lib/rate-limit";
 
 // Fetch a fresh fact from catfact.ninja and save if new
 async function fetchExternalFact(): Promise<string | null> {
@@ -17,6 +19,12 @@ async function fetchExternalFact(): Promise<string | null> {
 // GET /api/facts?seen=id1,id2,id3
 // Returns least-recently-seen fact NOT in the seen list (per-user LRU)
 export async function GET(req: NextRequest) {
+  const ip = req.headers.get("x-forwarded-for") ?? "unknown";
+  const { success } = rateLimit(`facts:${ip}`, 30, 60_000);
+  if (!success) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
+
   const seenParam = req.nextUrl.searchParams.get("seen") ?? "";
   const category = req.nextUrl.searchParams.get("category");
   const seenIds = seenParam ? seenParam.split(",").filter(Boolean) : [];
@@ -65,6 +73,11 @@ export async function GET(req: NextRequest) {
 
 // POST /api/facts — bulk fetch from external and save to DB
 export async function POST() {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const res = await fetch("https://catfact.ninja/facts?limit=50", {
       signal: AbortSignal.timeout(5000),
