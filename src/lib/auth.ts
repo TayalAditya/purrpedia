@@ -5,7 +5,7 @@ import { prisma } from "./prisma";
 import { createTransport } from "nodemailer";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  trustHost: true,
+  trustHost: !!process.env.AUTH_URL,
   adapter: PrismaAdapter(prisma),
   providers: [
     Nodemailer({
