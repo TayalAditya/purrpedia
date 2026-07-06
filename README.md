@@ -120,6 +120,24 @@ prisma/
   schema.prisma              # Database schema
 ```
 
+## Security
+
+PurrPedia passed an [Aikido Security](https://aikido.dev) AI code audit with **0 open issues** — all 5 findings identified and resolved:
+
+| Issue | Severity | Fix |
+|-------|----------|-----|
+| Host Header Injection (`auth.ts`) | High | `trustHost` gated behind `AUTH_URL` env var |
+| Business Logic Bypass (`rate-limit.ts`) | Medium | Dual user-ID + IP rate limiting with memory cleanup |
+| XSS via unsanitized HTML in emails (`sendPostcardEmail.ts`) | Medium | HTML-escape all user content before email injection |
+| Improper Input Validation (`sendPostcardEmail.ts`) | Medium | Validate postcardId, use `AUTH_URL` for base URLs |
+| Missing Auth on bulk import (`/api/facts`) | Low | Added auth check + rate limiting |
+
+Additional hardening:
+- **Security headers**: CSP, HSTS, X-Frame-Options DENY, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
+- **Input validation**: Zod schemas on all API inputs, regex validation on breed IDs (SSRF prevention), timezone validation via `Intl.DateTimeFormat`
+- **Rate limiting**: All public API endpoints rate-limited per IP
+- **No hardcoded secrets**: All credentials via environment variables
+
 ## License
 
 MIT
