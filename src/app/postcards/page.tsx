@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import LocalDate from "@/components/LocalDate";
 
 export default async function PostcardsPage() {
   const session = await auth();
@@ -52,9 +53,10 @@ export default async function PostcardsPage() {
                 </div>
                 <p className="text-stone-600 text-sm line-clamp-2 mb-3">{p.message}</p>
                 <p className="text-stone-400 text-xs">
-                  {p.status === "SENT" && p.sentAt
-                    ? `Sent ${p.sentAt.toLocaleDateString()}`
-                    : `Scheduled for ${p.scheduledFor.toLocaleDateString()}`}
+                  <LocalDate
+                    date={(p.status === "SENT" && p.sentAt ? p.sentAt : p.scheduledFor).toISOString()}
+                    prefix={p.status === "SENT" ? "Sent" : "Scheduled for"}
+                  />
                 </p>
                 {p.status === "SENT" && (
                   <Link
