@@ -33,7 +33,7 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen bg-[#08070A] flex flex-col items-center justify-center px-6 relative overflow-hidden">
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="w-[500px] h-[500px] rounded-full bg-[#F97316]/5 blur-3xl" />
+        <div className="w-125 h-125 rounded-full bg-[#F97316]/5 blur-3xl" />
       </div>
 
       <Link href="/" className="relative z-10 flex items-center gap-3 mb-12 hover:opacity-80 transition-opacity">
@@ -47,13 +47,13 @@ export default function LoginPage() {
         <div className="bg-[#13111A] border border-[#1F1B2E] rounded-2xl p-8">
           <div className="text-3xl mb-4">🐱</div>
           <h1 className="font-display text-2xl font-bold mb-1">Sign in</h1>
-          <p className="text-[#6B7280] text-sm mb-6">
+          <p className="text-muted-foreground text-sm mb-6">
             We&apos;ll send a magic link — no password needed.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-mono tracking-widest uppercase text-[#6B7280] mb-2">
+              <label className="block text-xs font-mono tracking-widest uppercase text-muted-foreground mb-2">
                 Email address
               </label>
               <input
@@ -63,7 +63,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 disabled={isPending}
-                className="w-full bg-[#08070A] border border-[#1F1B2E] rounded-lg px-4 py-3 text-sm text-[#FAF9F7] placeholder-[#6B7280] outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-colors disabled:opacity-50"
+                className="w-full bg-[#08070A] border border-[#1F1B2E] rounded-lg px-4 py-3 text-sm text-[#FAF9F7] placeholder-muted-foreground outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-colors disabled:opacity-50"
               />
             </div>
 
@@ -79,7 +79,7 @@ export default function LoginPage() {
           </form>
         </div>
 
-        <p className="text-center text-xs font-mono text-[#6B7280] mt-6 tracking-wider">
+        <p className="text-center text-xs font-mono text-muted-foreground mt-6 tracking-wider">
           FREE · NO CREDIT CARD · JUST CATS
         </p>
       </div>

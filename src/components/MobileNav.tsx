@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import PurrPediaLogo from "./PurrPediaLogo";
 import ThemeToggle from "./ThemeToggle";
+import GetStartedLink from "./GetStartedLink";
 
 interface MobileNavProps {
   backHref?: string;
@@ -18,7 +19,7 @@ export default function MobileNav({ backHref, backLabel }: MobileNavProps) {
       <nav className="flex items-center justify-between px-5 py-4 max-w-7xl mx-auto border-b border-[#1F1B2E]">
         {/* Left: back button OR logo */}
         {backHref ? (
-          <Link href={backHref} className="flex items-center gap-2 text-sm text-[#6B7280] hover:text-white transition-colors">
+          <Link href={backHref} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-white transition-colors">
             <span>←</span>
             <span className="hidden sm:block">{backLabel ?? "Back"}</span>
           </Link>
@@ -44,14 +45,11 @@ export default function MobileNav({ backHref, backLabel }: MobileNavProps) {
         {/* Right: hamburger on mobile, links on desktop */}
         <div className="flex items-center gap-3">
           <div className="hidden md:flex items-center gap-4">
-            <Link href="/facts" className="text-sm text-[#6B7280] hover:text-white transition-colors">Facts</Link>
-            <Link href="/breeds" className="text-sm text-[#6B7280] hover:text-white transition-colors">Breeds</Link>
-            <Link href="/quiz" className="text-sm text-[#6B7280] hover:text-white transition-colors">Quiz</Link>
-            <Link href="/name-generator" className="text-sm text-[#6B7280] hover:text-white transition-colors">Name Gen</Link>
-            <Link href="/postcards/new" className="text-sm text-[#6B7280] hover:text-white transition-colors">Send a Purr</Link>
-            <Link href="/login" className="bg-[#F97316] text-[#08070A] text-sm font-bold px-4 py-2 rounded-lg hover:bg-[#ea6a0f] transition-colors">
-              Get Started →
-            </Link>
+            <Link href="/facts" className="text-sm text-muted-foreground hover:text-white transition-colors">Facts</Link>
+            <Link href="/breeds" className="text-sm text-muted-foreground hover:text-white transition-colors">Breeds</Link>
+            <Link href="/quiz" className="text-sm text-muted-foreground hover:text-white transition-colors">Quiz</Link>
+            <Link href="/postcards/new" className="text-sm text-muted-foreground hover:text-white transition-colors">Send a Purr</Link>
+            <GetStartedLink className="bg-[#F97316] text-[#08070A] text-sm font-bold px-4 py-2 rounded-lg hover:bg-[#ea6a0f] transition-colors" />
           </div>
           <ThemeToggle />
           <button
@@ -71,7 +69,6 @@ export default function MobileNav({ backHref, backLabel }: MobileNavProps) {
             { href: "/facts", label: "🐱 Cat Facts" },
             { href: "/breeds", label: "📖 Breed Index" },
             { href: "/quiz", label: "✨ Which Cat Are You?" },
-            { href: "/name-generator", label: "🎲 Name Generator" },
             { href: "/postcards/new", label: "🐾 Send a Purr" },
             { href: "/digest/subscribe", label: "📬 Daily Digest" },
             { href: "/dashboard", label: "⚡ Dashboard" },
@@ -86,13 +83,9 @@ export default function MobileNav({ backHref, backLabel }: MobileNavProps) {
             </Link>
           ))}
           <div className="pt-2">
-            <Link
-              href="/login"
-              onClick={() => setOpen(false)}
+            <GetStartedLink
               className="block text-center bg-[#F97316] text-[#08070A] font-bold px-4 py-3 rounded-xl text-sm hover:bg-[#ea6a0f] transition-colors"
-            >
-              Get Started →
-            </Link>
+            />
           </div>
         </div>
       )}

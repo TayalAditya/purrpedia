@@ -5,7 +5,11 @@
     "rootDir": "./src",
     "module": "commonjs",
     "target": "es2020",
-    "noEmit": false
+    "noEmit": false,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src/temporal/**/*", "src/lib/**/*"]
 }
