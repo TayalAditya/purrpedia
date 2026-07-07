@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { NativeConnection, Worker } from "@temporalio/worker";
 import { fetchCatContent } from "./activities/fetchCatContent";
 import { sendDigestEmail } from "./activities/sendDigestEmail";
