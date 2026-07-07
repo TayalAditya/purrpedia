@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import PurrPediaLogo from "@/components/PurrPediaLogo";
 import LogoutButton from "@/components/LogoutButton";
+import LocalDate from "@/components/LocalDate";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -140,7 +141,10 @@ export default async function DashboardPage() {
                     <div>
                       <p className="text-sm text-[#FAF9F7] font-medium">{p.recipientName ?? p.recipientEmail}</p>
                       <p className="text-xs text-[#6B7280] font-mono mt-0.5">
-                        {p.status === "SENT" ? `Sent ${p.sentAt?.toLocaleDateString()}` : `Scheduled ${p.scheduledFor.toLocaleDateString()}`}
+                        <LocalDate
+                          date={(p.status === "SENT" ? p.sentAt ?? p.scheduledFor : p.scheduledFor).toISOString()}
+                          prefix={p.status === "SENT" ? "Sent" : "Scheduled"}
+                        />
                       </p>
                     </div>
                     <span className={`text-xs font-bold font-mono px-2.5 py-1 rounded-full ${
