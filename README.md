@@ -10,7 +10,7 @@ Built for [#HackTheKitty 2026](https://hackthekitty.devpost.com) — a full-stac
 
 PurrPedia started with a simple question: *what if a cat encyclopedia actually felt fun to use?*
 
-So we built one with paw-print cursors that follow your mouse, synthesized meow sounds (no audio files — pure Web Audio API wizardry), a postcard designer, a personality quiz, and a name generator that produces gems like **"Professor Biscuit McFluffington, Destroyer of Curtains"**.
+So we built one with paw-print cursors that follow your mouse, synthesized meow sounds (no audio files — pure Web Audio API wizardry), a postcard designer, and a personality quiz.
 
 It's a Next.js 16 app with a PostgreSQL backend, magic-link auth, Temporal workflows for scheduled emails, and a whole lot of cat energy.
 
@@ -27,8 +27,6 @@ It's a Next.js 16 app with a PostgreSQL backend, magic-link auth, Temporal workf
 **Daily Digest** — Subscribe to get a cat fact + breed spotlight + random cat photo delivered to your inbox every morning. Powered by Temporal durable workflows that survive server restarts.
 
 **Which Cat Are You?** — A 7-question personality quiz that maps you to one of 10 cat breeds. You get a custom result card with your breed's traits, personality description, and accent color.
-
-**Cat Name Generator** — Smash together titles, first names, last names, and suffixes into ridiculous royal cat names. Click to copy. Generate as many as you want.
 
 ---
 
@@ -80,7 +78,17 @@ You'll need:
 - Node.js 18+
 - A PostgreSQL database ([Neon](https://neon.tech) is free)
 - A [Cat API](https://thecatapi.com) key (also free)
-- Temporal server (optional — postcards/digests work without it, they just won't schedule)
+- A [Temporal Cloud](https://cloud.temporal.io) account (free dev tier) for digest/postcard scheduling
+
+### Running the Temporal worker
+
+The Temporal worker runs as a separate process (not inside Next.js):
+
+```bash
+npm run temporal:worker
+```
+
+This connects to Temporal Cloud using `TEMPORAL_ADDRESS`, `TEMPORAL_NAMESPACE`, and `TEMPORAL_API_KEY` from your `.env`.
 
 Check [`.env.example`](.env.example) for all the env vars.
 
@@ -95,7 +103,6 @@ src/
     breeds/               # Breed index + detail pages
     facts/                # Swipeable cat facts
     quiz/                 # Personality quiz
-    name-generator/       # Cat name generator
     postcards/            # Postcard editor + viewer
     dashboard/            # User dashboard
     digest/               # Digest subscribe/unsubscribe

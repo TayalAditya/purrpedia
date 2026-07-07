@@ -7,17 +7,16 @@ export async function getTemporalClient(): Promise<Client> {
 
   const address = process.env.TEMPORAL_ADDRESS ?? "localhost:7233";
   const apiKey = process.env.TEMPORAL_API_KEY;
+  const namespace = process.env.TEMPORAL_NAMESPACE ?? "default";
 
   const connection = await Connection.connect({
     address,
-    tls: apiKey ? {} : undefined,
-    metadata: apiKey ? { authorization: `Bearer ${apiKey}` } : undefined,
+    tls: !!apiKey,
+    apiKey: apiKey || undefined,
+    metadata: apiKey ? { "temporal-namespace": namespace } : undefined,
   });
 
-  client = new Client({
-    connection,
-    namespace: process.env.TEMPORAL_NAMESPACE ?? "default",
-  });
+  client = new Client({ connection, namespace });
 
   return client;
 }

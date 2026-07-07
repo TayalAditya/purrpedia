@@ -82,7 +82,7 @@ export default function LandingPage() {
       {/* Hero */}
       <section className="relative min-h-[90vh] flex flex-col items-center justify-center px-4 sm:px-6 text-center overflow-hidden py-16">
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-64 sm:w-[600px] h-64 sm:h-[600px] rounded-full bg-[#F97316]/5 blur-3xl" />
+          <div className="w-64 sm:w-150 h-64 sm:h-150 rounded-full bg-[#F97316]/5 blur-3xl" />
         </div>
 
         {/* Floating particles — hidden on small screens */}
@@ -93,8 +93,8 @@ export default function LandingPage() {
 
         <div className="relative z-10 w-full max-w-4xl">
           {/* Eyebrow */}
-          <div className="inline-flex items-center gap-2 bg-[#1C1928] border border-[#1F1B2E] text-[#A78BFA] text-[10px] sm:text-xs font-mono tracking-widest uppercase px-3 sm:px-4 py-2 rounded-full mb-6 sm:mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#A78BFA] animate-pulse shrink-0" />
+          <div className="inline-flex items-center gap-2 bg-[#1C1928] border border-[#1F1B2E] text-purple text-[10px] sm:text-xs font-mono tracking-widest uppercase px-3 sm:px-4 py-2 rounded-full mb-6 sm:mb-8">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple animate-pulse shrink-0" />
             <span>The Internet&apos;s Cat Encyclopedia</span>
           </div>
 
@@ -105,7 +105,7 @@ export default function LandingPage() {
             <span className="text-[#FAF9F7]">Pedia</span>
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl text-[#6B7280] max-w-xl mx-auto mb-6 sm:mb-8 leading-relaxed font-light px-2">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto mb-6 sm:mb-8 leading-relaxed font-light px-2">
             Everything the internet knows about cats — daily digest, encyclopedic breed index, and cat postcards scheduled for any date.
           </p>
 
@@ -153,7 +153,7 @@ export default function LandingPage() {
         <ScrollReveal className="text-center mb-10 sm:mb-16">
           <p className="text-xs font-mono tracking-widest uppercase text-[#F97316] mb-3">What is PurrPedia</p>
           <h2 className="font-display text-3xl sm:text-5xl font-black text-[#FAF9F7] tracking-tight">
-            Five ways to love cats
+            Four ways to love cats
           </h2>
         </ScrollReveal>
 
@@ -175,20 +175,20 @@ export default function LandingPage() {
           </ScrollReveal>
 
           <ScrollReveal>
-            <div className="card-hover bg-gradient-to-b from-[#1C1528] to-[#13111A] border border-[#A78BFA]/30 rounded-2xl p-6 sm:p-8 group relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#A78BFA]/5 to-transparent pointer-events-none" />
+            <div className="card-hover bg-linear-to-b from-[#1C1528] to-[#13111A] border border-purple/30 rounded-2xl p-6 sm:p-8 group relative overflow-hidden">
+              <div className="absolute inset-0 bg-linear-to-br from-purple/5 to-transparent pointer-events-none" />
               <div className="text-4xl sm:text-5xl mb-4 sm:mb-5">🐾</div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono tracking-widest uppercase text-[#A78BFA]">Feature 02</span>
-                <span className="text-xs bg-[#A78BFA]/20 text-[#A78BFA] px-2 py-0.5 rounded-full font-mono">POPULAR</span>
+                <span className="text-xs font-mono tracking-widest uppercase text-purple">Feature 02</span>
+                <span className="text-xs bg-purple/20 text-purple px-2 py-0.5 rounded-full font-mono">POPULAR</span>
               </div>
               <h3 className="font-display text-xl sm:text-2xl font-bold text-[#FAF9F7] mt-2 mb-3 tracking-tight">Purr Postcards</h3>
               <p className="text-[#6B7280] leading-relaxed text-sm">
                 Design a cat postcard, add stickers, write your message — then schedule it for any date. Arrives on time, every time.
               </p>
-              <div className="mt-5 pt-5 border-t border-[#A78BFA]/20 flex items-center justify-between">
+              <div className="mt-5 pt-5 border-t border-purple/20 flex items-center justify-between">
                 <span className="text-xs font-mono text-[#6B7280]">5 FREE PER DAY</span>
-                <span className="text-[#A78BFA] group-hover:translate-x-1 transition-transform">→</span>
+                <span className="text-purple group-hover:translate-x-1 transition-transform">→</span>
               </div>
             </div>
           </ScrollReveal>
@@ -197,14 +197,14 @@ export default function LandingPage() {
             <Link href="/breeds" className="block h-full">
               <div className="card-hover bg-[#13111A] border border-[#1F1B2E] rounded-2xl p-6 sm:p-8 group">
                 <div className="text-4xl sm:text-5xl mb-4 sm:mb-5">📖</div>
-                <span className="text-xs font-mono tracking-widest uppercase text-[#FBBF24]">Feature 03</span>
+                <span className="text-xs font-mono tracking-widest uppercase text-amber">Feature 03</span>
                 <h3 className="font-display text-xl sm:text-2xl font-bold text-[#FAF9F7] mt-2 mb-3 tracking-tight">The Breed Index</h3>
                 <p className="text-[#6B7280] leading-relaxed text-sm">
                   247 breeds. Full profiles with photos, temperament ratings, lifespan data, and origin stories.
                 </p>
                 <div className="mt-5 pt-5 border-t border-[#1F1B2E] flex items-center justify-between">
                   <span className="text-xs font-mono text-[#6B7280]">247 BREEDS</span>
-                  <span className="text-[#FBBF24] group-hover:translate-x-1 transition-transform">→</span>
+                  <span className="text-amber group-hover:translate-x-1 transition-transform">→</span>
                 </div>
               </div>
             </Link>
@@ -226,40 +226,22 @@ export default function LandingPage() {
               </div>
             </Link>
           </ScrollReveal>
-
-          <ScrollReveal>
-            <Link href="/name-generator" className="block">
-              <div className="card-hover bg-[#13111A] border border-[#1F1B2E] rounded-2xl p-6 sm:p-8 group">
-                <div className="text-4xl sm:text-5xl mb-4 sm:mb-5">🎲</div>
-                <span className="text-xs font-mono tracking-widest uppercase text-[#38BDF8]">Feature 05</span>
-                <h3 className="font-display text-xl sm:text-2xl font-bold text-[#FAF9F7] mt-2 mb-3 tracking-tight">Name Generator</h3>
-                <p className="text-[#6B7280] leading-relaxed text-sm">
-                  Generate ridiculously royal cat names — complete with titles, prefixes, and noble designations. Copy & share instantly.
-                </p>
-                <div className="mt-5 pt-5 border-t border-[#1F1B2E] flex items-center justify-between">
-                  <span className="text-xs font-mono text-[#6B7280]">∞ COMBINATIONS</span>
-                  <span className="text-[#38BDF8] group-hover:translate-x-1 transition-transform">→</span>
-                </div>
-              </div>
-            </Link>
-          </ScrollReveal>
         </div>
       </section>
 
       {/* Stats */}
       <ScrollReveal>
         <div className="border-y border-[#1F1B2E] bg-[#13111A]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10 grid grid-cols-2 md:grid-cols-5 gap-6 sm:gap-8 text-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-center">
             {[
               { value: "247", label: "Breeds", suffix: "" },
               { value: "12", label: "Daily Facts", suffix: "+" },
               { value: "5", label: "Purrs / Day", suffix: "" },
-              { value: "10", label: "Cat Personalities", suffix: "" },
               { value: "8", label: "AM Delivery", suffix: "am" },
             ].map(s => (
               <div key={s.label}>
                 <p className="font-display text-3xl sm:text-4xl font-black text-[#F97316]">
-                  {s.value}<span className="text-[#FBBF24]">{s.suffix}</span>
+                  {s.value}<span className="text-amber">{s.suffix}</span>
                 </p>
                 <p className="text-[10px] sm:text-xs font-mono tracking-widest uppercase text-[#6B7280] mt-1">{s.label}</p>
               </div>
@@ -271,7 +253,7 @@ export default function LandingPage() {
       {/* How it works */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-14 sm:py-24">
         <ScrollReveal className="text-center mb-10 sm:mb-16">
-          <p className="text-xs font-mono tracking-widest uppercase text-[#FBBF24] mb-3">How it works</p>
+          <p className="text-xs font-mono tracking-widest uppercase text-amber mb-3">How it works</p>
           <h2 className="font-display text-3xl sm:text-5xl font-black tracking-tight">Simple as a cat nap</h2>
         </ScrollReveal>
         <div className="space-y-3">
@@ -297,7 +279,7 @@ export default function LandingPage() {
 
       {/* CTA */}
       <ScrollReveal>
-        <section className="mx-3 sm:mx-4 mb-10 sm:mb-12 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-[#1C1928] via-[#13111A] to-[#1C1020] border border-[#1F1B2E] p-8 sm:p-16 text-center relative overflow-hidden">
+        <section className="mx-3 sm:mx-4 mb-10 sm:mb-12 rounded-2xl sm:rounded-3xl bg-linear-to-br from-[#1C1928] via-[#13111A] to-[#1C1020] border border-[#1F1B2E] p-8 sm:p-16 text-center relative overflow-hidden">
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="w-64 sm:w-96 h-64 sm:h-96 rounded-full bg-[#F97316]/8 blur-3xl" />
           </div>
@@ -328,7 +310,6 @@ export default function LandingPage() {
             <Link href="/login" className="hover:text-[#F97316] transition-colors">Sign In</Link>
             <Link href="/breeds" className="hover:text-[#F97316] transition-colors">Breeds</Link>
             <Link href="/quiz" className="hover:text-[#F97316] transition-colors">Quiz</Link>
-            <Link href="/name-generator" className="hover:text-[#F97316] transition-colors">Name Gen</Link>
             <Link href="/postcards/new" className="hover:text-[#F97316] transition-colors">Send a Purr</Link>
           </div>
         </div>
